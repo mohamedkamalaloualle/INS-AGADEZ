@@ -40,45 +40,68 @@
 
 <body>
 
-<header>
-    <h1>Institut National de la Statistique</h1>
-    <p>Direction Régionale d'Agadez</p>
-</header>
+    <header>
+        <h1>Institut National de la Statistique</h1>
+        <p>Direction Régionale d'Agadez</p>
+    </header>
+    <nav style="background:#333; padding:10px; text-align:center;">
+        <a href="#" onclick="showSection('Accueil')" style="color:white; margin:10px;">Accueil</a>
+        <a href="#" onclick="showSection('A propos')" style="color:white; margin:10px;">A propos</a>
+        <a href="#" onclick="showSection('mission')" style="color:white; margin:10px;">Missions</a>
+        <a href="#" onclick="showSection('contact')" style="color:white; margin:10px;">Contact</a>
+        <a href="#" onclick="showSection('admin')" class="menu">Administration</a>
+    </nav>
 
-<section>
-    <div class="box">
-        <h2>À propos</h2>
-        <p>La Direction Régionalee de l'Institut National de la Statistique d'Agadez assure la collecte, le traitement et la diffusion des données statistiques pour appuyer la prise de décision.</p>
-    </div>
+    <section>
+        <div id="accueil" class="box">
+            <h2>Bienvenue</h2>
+            <p>Bienvenue sur le site de la Direction Régionale de l’Institut National de la Statistique d’Agadez.</p>
+            <p>Nous assurons la collecte, l’analyse et la diffusion des données statistiques.</p>
+        </div>
+        <div id="A propos" style="display:none;" class="box">
+            <h2>A propos</h2>
+            <p>La Direction Régionalee de l'Institut National de la Statistique d'Agadez assure la collecte, le traitement et la diffusion des données statistiques pour appuyer la prise de décision.</p>
+        </div>
+        <div id="mission" style="display:none;" class="box">
+            <h2>Missions</h2>
+            <p>Produire de Données Régionales</p>
+            <p>Enquêtes terrain</p>
+            <p>Analyse et diffusion</p>
+        </div>
+        <div id="contact" style="display:none;" class="box">
+            <h2>Contact</h2>
+            <p>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3815.8431959116638!2d7.989632275912108!3d16.98226161434819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1198310f9ba81d4b%3A0x60494a9d0df16a54!2sDIRECTION%20R%C3%A9gionale%20de%20l&#39;INS%20d&#39;Agadez!5e0!3m2!1sfr!2sne!4v1774578134961!5m2!1sfr!2sne" width="100" height="400" style="border:0;" border _ radius="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"
+                width="100%"
+                height="400"
 
-    <div class="box">
-        <h2><a href="mission.html">Voir ordre de mission</a></h2>
-    </div>
+            <p>📞 +227 20 44 09 14</p>
+            <p>📧 agadez@ins.ne</p>
+        </div>
+        <div id="admin" style="display:none;" class="box">
+            <h2>Administration</h2>
 
-    <div class="box">
-        <h2>Missions</h2>
-        <ul>
-            <li>Produire de Données Régionales</li>
-            <li>Coordination Statistique</li>
-            <li>Diffuser les Données Statistiques</li>
-        </ul>
-    </div>
+            <p>Modifier les informations :</p>
 
-    <div class="box">
-        <h2>Contact</h2>
-        <p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3815.8431959116638!2d7.989632275912108!3d16.98226161434819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1198310f9ba81d4b%3A0x60494a9d0df16a54!2sDIRECTION%20R%C3%A9gionale%20de%20l&#39;INS%20d&#39;Agadez!5e0!3m2!1sfr!2sne!4v1774578134961!5m2!1sfr!2sne" width="100%" height="400" style="border:0;" frameborder _ radius="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"
-            width="100%"
-            height="400"
+            <input type="text" id="titre" placeholder="Nouveau titre"><br><br>   
+            <textarea id="contenu" placeholder="Nouveau contenu"></textarea><br><br>
 
-        <p>📞 +227 20 44 09 14</p>
-        <p>📧 agadez@ins.ne</p>
-    </div>
-</section>
+            <button onclick="modifierContenu()">Enregistrer</button>
+        </div>
+    </section>
 
-<footer>
-    <p>© 2026 Institut National de la Statistique - Agadez</p>
-</footer>
+    <footer>
+        <p>© 2026 Institut National de la Statistique - Agadez</p>
+    </footer>
+    <script>
+        function showSection(sectionId) {
+            document.getElementById("A propos").style.display = "none";
+            document.getElementById("mission").style.display = "none";
+            document.getElementById("contact").style.display = "none";
+            document.getElementById("Admin").style.display = "none";
 
+            document.getElementById(sectionId).style.display = "block";
+        }
+    </script>
 </body>
 </html>
