@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>INS - Direction Régionale d'Agadez</title>
     <meta charset="UTF-8">
+    <title>INS Direction Régionale d'Agadez'</title>
 
     <style>
         body {
-            font-family: Arial;
+            font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             margin: 0;
         }
@@ -18,90 +18,240 @@
             text-align: center;
         }
 
-        section {
+        /* MENU HORIZONTAL */
+        nav {
+            background-color: #006400;
+            padding: 10px;
+            text-align: left;
+        }
+
+            nav button {
+                background: none;
+                border: none;
+                color: #ff6a00;
+                margin: 10px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+
+                nav button:hover {
+                    color: #00c3ff;
+                }
+
+        /* CONTENU */
+        .section {
+            display: none;
             padding: 20px;
         }
 
-        .box {
-            background: white;
-            padding: 15px;
-            margin: 10px;
-            border-radius: 10px;
-        }
-
-        footer {
-            background: #222;
-            color: white;
-            text-align: center;
-            padding: 10px;
+        .active {
+            display: block;
         }
     </style>
+
 </head>
 
 <body>
-
     <header>
         <h1>Institut National de la Statistique</h1>
         <p>Direction Régionale d'Agadez</p>
     </header>
-    <nav style="background:#333; padding:10px; text-align:center;">
-        <a href="#" onclick="showSection('Accueil')" style="color:white; margin:10px;">Accueil</a>
-        <a href="#" onclick="showSection('A propos')" style="color:white; margin:10px;">A propos</a>
-        <a href="#" onclick="showSection('mission')" style="color:white; margin:10px;">Missions</a>
-        <a href="#" onclick="showSection('contact')" style="color:white; margin:10px;">Contact</a>
-        <a href="#" onclick="showSection('admin')" class="menu">Administration</a>
+
+    <!-- MENU -->
+    <nav>
+        <button onclick="showSection('accueil')">Accueil</button>
+        <button onclick="showSection('apropos')">A propos</button>
+        <button onclick="showSection('mission')">Missions</button>
+        <button onclick="showSection('publication')">Publication</button>
+        <button onclick="showSection('actualite')">Actualité</button>
+        <button onclick="showSection('contact')">Contact</button>
+        <button onclick="showSection('admin')">Administration</button>
     </nav>
 
-    <section>
-        <div id="accueil" class="box">
-            <h2>Bienvenue</h2>
-            <p>Bienvenue sur le site de la Direction Régionale de l’Institut National de la Statistique d’Agadez.</p>
-            <p>Nous assurons la collecte, l’analyse et la diffusion des données statistiques.</p>
-        </div>
-        <div id="A propos" style="display:none;" class="box">
-            <h2>A propos</h2>
-            <p>La Direction Régionalee de l'Institut National de la Statistique d'Agadez assure la collecte, le traitement et la diffusion des données statistiques pour appuyer la prise de décision.</p>
-        </div>
-        <div id="mission" style="display:none;" class="box">
-            <h2>Missions</h2>
-            <p>Produire de Données Régionales</p>
-            <p>Enquêtes terrain</p>
-            <p>Analyse et diffusion</p>
-        </div>
-        <div id="contact" style="display:none;" class="box">
-            <h2>Contact</h2>
-            <p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3815.8431959116638!2d7.989632275912108!3d16.98226161434819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1198310f9ba81d4b%3A0x60494a9d0df16a54!2sDIRECTION%20R%C3%A9gionale%20de%20l&#39;INS%20d&#39;Agadez!5e0!3m2!1sfr!2sne!4v1774578134961!5m2!1sfr!2sne" width="100" height="400" style="border:0;" border _ radius="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"
-                width="100%"
-                height="400"
+    <!-- CONTENUS -->
+    <div id="accueil" class="section active">
+        <h2>Accueil</h2>
+        <p>Bienvenue sur le site de la Direction Régionale de l’Institut National de la Statistique d’Agadez.</p>
+        <p>Nous assurons la collecte, l’analyse et la diffusion des données statistiques.</p>
+    </div>
 
-            <p>📞 +227 20 44 09 14</p>
-            <p>📧 agadez@ins.ne</p>
-        </div>
-        <div id="admin" style="display:none;" class="box">
-            <h2>Administration</h2>
+    <div id="apropos" class="section">
+        <h2>À propos</h2>
+        <p>La Direction Régionalee de l'Institut National de la Statistique d'Agadez assure la collecte, le traitement et la diffusion des données statistiques pour appuyer la prise de décision.</p>
+    </div>
 
-            <p>Modifier les informations :</p>
+    <div id="mission" class="section">
+        <h2>Missions</h2>
+        <p>Produire de Données Régionales</p>
+        <p>Coordination Statistique</p>
+        <p>Diffusion des données Satistiques</p>
+    </div>
 
-            <input type="text" id="titre" placeholder="Nouveau titre"><br><br>   
-            <textarea id="contenu" placeholder="Nouveau contenu"></textarea><br><br>
+    <div id="publication" class="section">
+        <h2>Publications</h2>
+        <div id="listePublications"></div>
+    </div>
 
-            <button onclick="modifierContenu()">Enregistrer</button>
-        </div>
-    </section>
+    <div id="actualite" class="section">
+        <h2>Actualités</h2>
+        <div id="listeActualites"></div>
+    </div>
 
-    <footer>
-        <p>© 2026 Institut National de la Statistique - Agadez</p>
-    </footer>
+    <div id="contact" class="section">
+        <h2>Contact</h2>
+        <p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3815.8431959116638!2d7.989632275912108!3d16.98226161434819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1198310f9ba81d4b%3A0x60494a9d0df16a54!2sDIRECTION%20R%C3%A9gionale%20de%20l&#39;INS%20d&#39;Agadez!5e0!3m2!1sfr!2sne!4v1774578134961!5m2!1sfr!2sne" width="100" height="400" style="border:0;" border _ radius="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"
+            width="100%"
+            height="400"
+
+        <p>📞 +227 20 44 09 14</p>
+        <p>📧 agadez@ins.ne</p>
+    </div>
+
+    <div id="admin" class="section">
+        <h2>Administration</h2>
+        <h3>Ajouter une actualité</h3>
+        <input type="text" id="titreActu" placeholder="Titre"><br><br>
+        <textarea id="contenuActu" placeholder="Contenu"></textarea><br><br>
+        <input type="file" id="imageActu"><br><br>
+        <button onclick="ajouterActualite()">Publier</button>
+
+        <hr>
+
+        <h3>Ajouter une publication</h3>
+        <input type="text" id="titrePub" placeholder="Titre"><br><br>
+        <textarea id="contenuPub" placeholder="Contenu"></textarea><br><br>
+        <input type="file" id="fichierPub" accept="application/pdf">
+        <button onclick="ajouterPublication()">Publier</button>
+    </div>
+
+    <!-- SCRIPT -->
     <script>
-        function showSection(sectionId) {
-            document.getElementById("A propos").style.display = "none";
-            document.getElementById("mission").style.display = "none";
-            document.getElementById("contact").style.display = "none";
-            document.getElementById("Admin").style.display = "none";
 
-            document.getElementById(sectionId).style.display = "block";
+        // ================= MENU =================
+        function showSection(id) {
+
+            let section = document.getElementById(id);
+
+            if (!section) {
+                alert("Section introuvable : " + id);
+                return;
+            }
+
+            let sections = document.querySelectorAll('.section');
+
+            sections.forEach(sec => {
+                sec.classList.remove('active');
+            });
+
+            section.classList.add('active');
         }
+
+        // ================= ACTUALITÉS =================
+        function ajouterActualite() {
+            let titre = document.getElementById("titreActu").value;
+            let contenu = document.getElementById("contenuActu").value;
+            let imageInput = document.getElementById("imageActu");
+
+            if (imageInput.files.length > 0) {
+                let reader = new FileReader();
+
+                reader.onload = function () {
+                    sauvegarderActu(titre, contenu, reader.result);
+                }
+
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                sauvegarderActu(titre, contenu, "");
+            }
+        }
+
+        function sauvegarderActu(titre, contenu, image) {
+            let actu = { titre, contenu, image };
+
+            let actualites = JSON.parse(localStorage.getItem("actualites")) || [];
+            actualites.push(actu);
+
+            localStorage.setItem("actualites", JSON.stringify(actualites));
+
+            afficherActualites();
+        }
+
+        function afficherActualites() {
+            let liste = document.getElementById("listeActualites");
+            if (!liste) return;
+
+            liste.innerHTML = "";
+
+            let actualites = JSON.parse(localStorage.getItem("actualites")) || [];
+
+            actualites.forEach(actu => {
+                liste.innerHTML += `
+                 <div style="margin:15px; padding:10px; border:1px solid #ccc;">
+                     ${actu.image ? `<img src="${actu.image}" style="width:100%; max-width:300px;">` : ""}
+                     <h3>${actu.titre || ""}</h3>
+                     <p>${actu.contenu || ""}</p>
+                 </div>
+             `;
+            });
+        }
+
+        // ================= CHARGEMENT =================
+        window.onload = function () {
+            afficherActualites();
+            afficherPublications();
+        }
+        // ================= PUBLICATIONS =================
+        function ajouterPublication() {
+            let titre = document.getElementById("titrePub").value;
+            let contenu = document.getElementById("contenuPub").value;
+            let fichierInput = document.getElementById("fichierPub");
+
+            if (fichierInput.files.length === 0) {
+                alert("Veuillez sélectionner un PDF !");
+                return;
+            }
+
+            let reader = new FileReader();
+
+            reader.onload = function () {
+                sauvegarderPublication(titre, contenu, reader.result);
+            }
+
+            reader.readAsDataURL(fichierInput.files[0]);
+        }
+
+        function sauvegarderPublication(titre, contenu, fichier) {
+            let pub = { titre, contenu, fichier };
+
+            let publications = JSON.parse(localStorage.getItem("publications")) || [];
+            publications.push(pub);
+
+            localStorage.setItem("publications", JSON.stringify(publications));
+
+            afficherPublications();
+        }
+
+        function afficherPublications() {
+            let liste = document.getElementById("listePublications");
+            if (!liste) return;
+
+            liste.innerHTML = "";
+
+            let publications = JSON.parse(localStorage.getItem("publications")) || [];
+
+            publications.forEach(pub => {
+                liste.innerHTML += `
+            <div style="margin:15px; padding:10px; border:1px solid #ccc;">
+                <h3>${pub.titre || ""}</h3>
+                <p>${pub.contenu || ""}</p>
+                <a href="${pub.fichier}" target="_blank">📄 Voir le PDF</a>
+            </div>
+        `;
+            });
+        }
+
     </script>
+
 </body>
 </html>
