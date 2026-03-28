@@ -2,27 +2,25 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>INS Direction Régionale d'Agadez'</title>
+    <title>INS Direction Régionale d'Agadez</title>
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: Arial;
             margin: 0;
+            background: #f4f4f4;
         }
 
         header {
-            background-color: #006400;
+            background: #006400;
             color: white;
             padding: 20px;
             text-align: center;
         }
 
-        /* MENU HORIZONTAL */
         nav {
-            background-color: #006400;
+            background: #006400;
             padding: 10px;
-            text-align: left;
         }
 
             nav button {
@@ -38,7 +36,6 @@
                     color: #00c3ff;
                 }
 
-        /* CONTENU */
         .section {
             display: none;
             padding: 20px;
@@ -47,17 +44,23 @@
         .active {
             display: block;
         }
-    </style>
 
+        .card {
+            margin: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background: white;
+        }
+    </style>
 </head>
 
 <body>
+
     <header>
         <h1>Institut National de la Statistique</h1>
         <p>Direction Régionale d'Agadez</p>
     </header>
 
-    <!-- MENU -->
     <nav>
         <button onclick="showSection('accueil')">Accueil</button>
         <button onclick="showSection('apropos')">A propos</button>
@@ -68,23 +71,23 @@
         <button onclick="showSection('admin')">Administration</button>
     </nav>
 
-    <!-- CONTENUS -->
+    <!-- SECTIONS -->
+
     <div id="accueil" class="section active">
         <h2>Accueil</h2>
         <p>Bienvenue sur le site de la Direction Régionale de l’Institut National de la Statistique d’Agadez.</p>
-        <p>Nous assurons la collecte, l’analyse et la diffusion des données statistiques.</p>
     </div>
 
     <div id="apropos" class="section">
         <h2>À propos</h2>
-        <p>La Direction Régionalee de l'Institut National de la Statistique d'Agadez assure la collecte, le traitement et la diffusion des données statistiques pour appuyer la prise de décision.</p>
+        <p>Collecte, traitement et diffusion des données statistiques.</p>
     </div>
 
     <div id="mission" class="section">
         <h2>Missions</h2>
-        <p>Produire de Données Régionales</p>
-        <p>Coordination Statistique</p>
-        <p>Diffusion des données Satistiques</p>
+        <p>Production des données</p>
+        <p>Coordination statistique</p>
+        <p>Diffusion de données Statistiques</p>
     </div>
 
     <div id="publication" class="section">
@@ -99,10 +102,10 @@
 
     <div id="contact" class="section">
         <h2>Contact</h2>
-        <p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3815.8431959116638!2d7.989632275912108!3d16.98226161434819!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1198310f9ba81d4b%3A0x60494a9d0df16a54!2sDIRECTION%20R%C3%A9gionale%20de%20l&#39;INS%20d&#39;Agadez!5e0!3m2!1sfr!2sne!4v1774578134961!5m2!1sfr!2sne" width="100" height="400" style="border:0;" border _ radius="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>"
-            width="100%"
-            height="400"
+
+        <iframe src="https://www.google.com/maps?q=Agadez&output=embed"
+                width="100%" height="300" style="border:0;">
+        </iframe>
 
         <p>📞 +227 20 44 09 14</p>
         <p>📧 agadez@ins.ne</p>
@@ -110,146 +113,116 @@
 
     <div id="admin" class="section">
         <h2>Administration</h2>
-        <h3>Ajouter une actualité</h3>
+
+        <h3>Actualité</h3>
         <input type="text" id="titreActu" placeholder="Titre"><br><br>
-        <textarea id="contenuActu" placeholder="Contenu"></textarea><br><br>
+<textarea id="contenuActu" placeholder="Contenu"></textarea><br><br>
         <input type="file" id="imageActu"><br><br>
         <button onclick="ajouterActualite()">Publier</button>
 
         <hr>
 
-        <h3>Ajouter une publication</h3>
+        <h3>Publication PDF</h3>
         <input type="text" id="titrePub" placeholder="Titre"><br><br>
-        <textarea id="contenuPub" placeholder="Contenu"></textarea><br><br>
-        <input type="file" id="fichierPub" accept="application/pdf">
+<textarea id="contenuPub" placeholder="Contenu"></textarea><br><br>
+        <input type="file" id="fichierPub" accept="application/pdf"><br><br>
         <button onclick="ajouterPublication()">Publier</button>
     </div>
 
-    <!-- SCRIPT -->
     <script>
 
-        // ================= MENU =================
+        // MENU + MOT DE PASSE
         function showSection(id) {
 
-            let section = document.getElementById(id);
-
-            if (!section) {
-                alert("Section introuvable : " + id);
-                return;
+            if (id === 'admin') {
+                let password = prompt("Mot de passe :");
+                if (password !== "1234") {
+                    alert("Accès refusé");
+                    return;
+                }
             }
 
-            let sections = document.querySelectorAll('.section');
-
-            sections.forEach(sec => {
-                sec.classList.remove('active');
-            });
-
-            section.classList.add('active');
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
         }
 
-        // ================= ACTUALITÉS =================
+        // ACTUALITES
         function ajouterActualite() {
-            let titre = document.getElementById("titreActu").value;
-            let contenu = document.getElementById("contenuActu").value;
-            let imageInput = document.getElementById("imageActu");
+            let titre = titreActu.value;
+            let contenu = contenuActu.value;
+            let file = imageActu.files[0];
 
-            if (imageInput.files.length > 0) {
-                let reader = new FileReader();
+            if (!file) return sauvegarderActu(titre, contenu, "");
 
-                reader.onload = function () {
-                    sauvegarderActu(titre, contenu, reader.result);
-                }
-
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                sauvegarderActu(titre, contenu, "");
-            }
+            let reader = new FileReader();
+            reader.onload = () => sauvegarderActu(titre, contenu, reader.result);
+            reader.readAsDataURL(file);
         }
 
         function sauvegarderActu(titre, contenu, image) {
-            let actu = { titre, contenu, image };
-
-            let actualites = JSON.parse(localStorage.getItem("actualites")) || [];
-            actualites.push(actu);
-
-            localStorage.setItem("actualites", JSON.stringify(actualites));
-
+            let data = JSON.parse(localStorage.getItem("actu")) || [];
+            data.push({ titre, contenu, image });
+            localStorage.setItem("actu", JSON.stringify(data));
             afficherActualites();
         }
 
         function afficherActualites() {
-            let liste = document.getElementById("listeActualites");
-            if (!liste) return;
+            let list = document.getElementById("listeActualites");
+            list.innerHTML = "";
 
-            liste.innerHTML = "";
+            let data = JSON.parse(localStorage.getItem("actu")) || [];
 
-            let actualites = JSON.parse(localStorage.getItem("actualites")) || [];
-
-            actualites.forEach(actu => {
-                liste.innerHTML += `
-                 <div style="margin:15px; padding:10px; border:1px solid #ccc;">
-                     ${actu.image ? `<img src="${actu.image}" style="width:100%; max-width:300px;">` : ""}
-                     <h3>${actu.titre || ""}</h3>
-                     <p>${actu.contenu || ""}</p>
-                 </div>
-             `;
+            data.forEach(a => {
+                list.innerHTML += `
+            <div class="card">
+                ${a.image ? `<img src="${a.image}" width="200">` : ""}
+                <h3>${a.titre}</h3>
+                <p>${a.contenu}</p>
+            </div>`;
             });
         }
 
-        // ================= CHARGEMENT =================
-        window.onload = function () {
-            afficherActualites();
-            afficherPublications();
-        }
-        // ================= PUBLICATIONS =================
+        // PUBLICATIONS PDF
         function ajouterPublication() {
-            let titre = document.getElementById("titrePub").value;
-            let contenu = document.getElementById("contenuPub").value;
-            let fichierInput = document.getElementById("fichierPub");
+            let titre = titrePub.value;
+            let contenu = contenuPub.value;
+            let file = fichierPub.files[0];
 
-            if (fichierInput.files.length === 0) {
-                alert("Veuillez sélectionner un PDF !");
-                return;
-            }
+            if (!file) return alert("Choisir un PDF");
 
             let reader = new FileReader();
-
-            reader.onload = function () {
-                sauvegarderPublication(titre, contenu, reader.result);
-            }
-
-            reader.readAsDataURL(fichierInput.files[0]);
+            reader.onload = () => sauvegarderPub(titre, contenu, reader.result);
+            reader.readAsDataURL(file);
         }
 
-        function sauvegarderPublication(titre, contenu, fichier) {
-            let pub = { titre, contenu, fichier };
-
-            let publications = JSON.parse(localStorage.getItem("publications")) || [];
-            publications.push(pub);
-
-            localStorage.setItem("publications", JSON.stringify(publications));
-
+        function sauvegarderPub(titre, contenu, fichier) {
+            let data = JSON.parse(localStorage.getItem("pub")) || [];
+            data.push({ titre, contenu, fichier });
+            localStorage.setItem("pub", JSON.stringify(data));
             afficherPublications();
         }
 
         function afficherPublications() {
-            let liste = document.getElementById("listePublications");
-            if (!liste) return;
+            let list = document.getElementById("listePublications");
+            list.innerHTML = "";
 
-            liste.innerHTML = "";
+            let data = JSON.parse(localStorage.getItem("pub")) || [];
 
-            let publications = JSON.parse(localStorage.getItem("publications")) || [];
-
-            publications.forEach(pub => {
-                liste.innerHTML += `
-            <div style="margin:15px; padding:10px; border:1px solid #ccc;">
-                <h3>${pub.titre || ""}</h3>
-                <p>${pub.contenu || ""}</p>
-                <a href="${pub.fichier}" target="_blank">📄 Voir le PDF</a>
-            </div>
-        `;
+            data.forEach(p => {
+                list.innerHTML += `
+            <div class="card">
+                <h3>${p.titre}</h3>
+                <p>${p.contenu}</p>
+                <a href="${p.fichier}" target="_blank">📄 Ouvrir PDF</a>
+            </div>`;
             });
         }
+
+        // CHARGEMENT
+        window.onload = () => {
+            afficherActualites();
+            afficherPublications();
+        };
 
     </script>
 
