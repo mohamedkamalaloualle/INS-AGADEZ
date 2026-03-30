@@ -11,6 +11,15 @@
             background: #ccc;
             margin: 0;
             font-family: Arial;
+            font-size: 18px; /* 🔥 taille globale */
+        }
+        .ligne-double {
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to right, #006400 95%, orange 5%);
+            margin-top: 20px; /* 🔥 espace avec l’entête */
+            margin-bottom: 20px;
+            margin-bottom: 70px; /* 🔥 espace avec le contenu */
         }
 
         .page {
@@ -53,15 +62,21 @@
         .header {
             display: flex;
             align-items: center;
+            position: relative;
+            margin-bottom: 10px; /* ✔️ petit espace propre */
         }
-
         .logo {
-            width: 100px;
+            width: 200px;
         }
 
         .header-text {
-            flex: 1;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
             text-align: center;
+            margin: 3px 0;
+            font-size: 16px;
+
         }
 
         /* TITRE */
@@ -131,18 +146,19 @@
         let contenu = `
 
 <div class="header">
-        <img src="logo_ins.png" class="logo">
+    <img src="logo_ins.png" class="logo">
 
-        <div class="header-text">
-            <p><b>REPUBLIQUE DU NIGER</b><br>
-            Fraternité - Travail - Progrès</p>
-
-            <p><b>MINISTERE DE L’ECONOMIE ET DES FINANCES</b><br>
-            INSTITUT NATIONAL DE LA STATISTIQUE<br>
-            Etablissement public à caractère administratif<br>
-            <b>DIRECTION REGIONALE D’AGADEZ</b></p>
-        </div>
+    <div class="header-text">
+        <p><b>REPUBLIQUE DU NIGER</b><br>
+        Fraternité - Travail - Progrès</p>
+        <p><b>MINISTERE DE L’ECONOMIE ET DES FINANCES</b></p>
+        <b>INSTITUT NATIONAL DE LA STATISTIQUE</b><br>
+        Etablissement public à caractère administratif<br></p>
+        <b>DIRECTION REGIONALE D’AGADEZ</b></p>
+    </div>
 </div>
+
+<div class="ligne-double"></div>
 
 <p style="text-align:right;">
         Agadez, le ${params.get("dateVille") || "......................."}
