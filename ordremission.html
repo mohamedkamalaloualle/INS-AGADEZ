@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ordre de Mission</title>
+
+    <style>
+
+        /* FORMAT A4 */
+        body {
+            background: #ccc;
+            margin: 0;
+            font-family: Arial;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: auto;
+            background: white;
+            padding: 20mm;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .bas-document {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 100px;
+        }
+
+        .qr-box {
+            width: 120px;
+            text-align: center;
+            position: relative;
+        }
+
+        .qr-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 30px;
+            background: white;
+            padding: 2px;
+        }
+
+        .signature-box {
+            text-align: right;
+        }
+        /* ENTETE */
+        .header {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 100px;
+        }
+
+        .header-text {
+            flex: 1;
+            text-align: center;
+        }
+
+        /* TITRE */
+        .titre {
+            text-align: center;
+            text-decoration: underline;
+            margin-top: 20px;
+        }
+
+        /* SIGNATURE */
+        .signature {
+            text-align: right;
+            margin-top: 80px;
+        }
+
+        /* QR BAS GAUCHE */
+        .qr-container {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 120px;
+            height: 120px;
+        }
+
+        #qrcode {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* LOGO AU CENTRE QR */
+        .qr-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 5px;
+            padding: 2px;
+        }
+
+        /* IMPRESSION */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page" id="contenu"></div>
+
+    <script>
+
+        // PARAMETRES URL
+        let params = new URLSearchParams(window.location.search);
+
+        // CONTENU HTML
+        let contenu = `
+
+<div class="header">
+        <img src="logo_ins.png" class="logo">
+
+        <div class="header-text">
+            <p><b>REPUBLIQUE DU NIGER</b><br>
+            Fraternité - Travail - Progrès</p>
+
+            <p><b>MINISTERE DE L’ECONOMIE ET DES FINANCES</b><br>
+            INSTITUT NATIONAL DE LA STATISTIQUE<br>
+            Etablissement public à caractère administratif<br>
+            <b>DIRECTION REGIONALE D’AGADEZ</b></p>
+        </div>
+</div>
+
+<p style="text-align:right;">
+        Agadez, le ${params.get("date.value") || "......................."}
+</p>
+
+<p><b>N° ${params.get("num") || "________"}/MEF/INS/DR/AZ</b></p>
+
+<h3 class="titre">ORDRE DE MISSION</h3>
+
+<p><b>Nom :</b> ${params.get("nom") || ".........................."}</p>
+<p><b>Prénom :</b> ${params.get("prenom") || "......................"}</p>
+<p><b>Objet :</b> ${params.get("objet") || ".........................."}</p>
+<p><b>Fonction :</b> ${params.get("fonction") || "......................"}</p>
+<p><b>Destination :</b> ${params.get("destination") || "......................"}</p>
+<p><b>Date de départ :</b> ${params.get("depart") || "......................"}</p>
+<p><b>Date de retour :</b> ${params.get("retour") || "......................"}</p>
+<p><b>Moyen de transport :</b> ${params.get("transport") || "......................"}</p>
+<p><b>Chauffeur :</b> ${params.get("chauffeur") || "......................"}</p>
+<p><b>Accompagné :</b> ${params.get("accompagne") || "......................"}</p>
+
+<div class="bas-document">
+
+    <!-- QR CODE -->
+    <div class="qr-box">
+        <div id="qrcode"></div>
+        <img src="logo_ins.png" class="qr-logo">
+        <p style="font-size:10px;">Vérification</p>
+    </div>
+
+    <!-- SIGNATURE -->
+    <div class="signature-box">
+        <p>Le Directeur Régional</p>
+        <br><br><br>
+        <b>Issoufou TINGUIDI</b>
+    </div>
+
+</div>
+`;
+
+        document.getElementById("contenu").innerHTML = contenu;
+
+    </script>
+
+    <!-- LIBRAIRIE QR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <script>
+
+        // 🔥 GENERATION QR
+        let url = window.location.href;
+
+        new QRCode(document.getElementById("qrcode"), {
+            text: url,
+            width: 120,
+            height: 120
+        });
+
+    </script>
+
+</body>
+</html>

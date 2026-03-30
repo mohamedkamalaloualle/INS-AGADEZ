@@ -14,7 +14,17 @@
         header {
             background: #006400;
             color: white;
-            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 200px;
+        }
+
+        .header-text {
+            flex: 10;
             text-align: center;
         }
 
@@ -57,8 +67,18 @@
 <body>
 
     <header>
-        <h1>Institut National de la Statistique</h1>
-        <p>Direction Régionale d'Agadez</p>
+        <!-- LOGO GAUCHE -->
+        <img src="armoirie.png" class="logo">
+
+        <!-- TEXTE CENTRE -->
+        <div class="header-text">
+            <h2>Institut National de la Statistique</h2>
+            <p>Direction Régionale d'Agadez</p>
+        </div>
+
+        <!-- LOGO DROITE -->
+        <img src="logo_ins.png" class="logo">
+
     </header>
 
     <nav>
@@ -68,7 +88,7 @@
         <button onclick="showSection('publication')">Publication</button>
         <button onclick="showSection('actualite')">Actualité</button>
         <button onclick="showSection('contact')">Contact</button>
-        <button onclick="showSection('admin')">Administration</button>
+        <button onclick="loginAdmin()">Administration</button>
     </nav>
 
     <!-- SECTIONS -->
@@ -76,7 +96,7 @@
     <div id="accueil" class="section active">
         <h2>Accueil</h2>
         <p>Bienvenue sur le site de la Direction Régionale de l’Institut National de la Statistique d’Agadez.</p>
-        <img id="slider" src="image1.jpg" style="width: 50%; height: 600px; object-fit: cover; border-radius: 5px; ">
+        <img id="slider" src="image1.jpg" style="width: 38%; height: 800px; object-fit: cover; border-radius: 5px; ">
     </div>
 
     <div id="apropos" class="section">
@@ -119,34 +139,97 @@
     <div id="admin" class="section">
         <h2>Administration</h2>
 
+        <!-- ACTUALITE -->
         <h3>Actualité</h3>
         <input type="text" id="titreActu" placeholder="Titre"><br><br>
-<textarea id="contenuActu" placeholder="Contenu"></textarea><br><br>
+        <textarea id="contenuActu" placeholder="Contenu"></textarea><br><br>
         <input type="file" id="imageActu"><br><br>
         <button onclick="ajouterActualite()">Publier</button>
+        <h3>Gestion des actualités</h3>
+        <div id="listeActualitesAdmin"></div>
+        <hr>
+
+        <!-- PUBLICATION -->
+        <h3>Publication PDF</h3>
+        <input type="text" id="titrePub" placeholder="Titre"><br><br>
+        <textarea id="contenuPub" placeholder="Contenu"></textarea><br><br>
+        <input type="file" id="fichierPub" accept="application/pdf"><br><br>
+        <button onclick="ajouterPublication()">Publier</button>
+        <h3>Gestion des publications</h3>
+        <div id="listePublicationsAdmin"></div>
+        <hr>
+
+        <!-- ORDRE DE MISSION -->
+        <h3>📄 Générer Ordre de Mission Officiel</h3>
+
+        <input id="num" placeholder="Numéro"><br><br>
+        <input id="dateVille" placeholder="Ex: Agadez, le 01/01/2026"><br><br>
+
+        <input id="nom" placeholder="Nom"><br><br>
+        <input id="prenom" placeholder="Prénom"><br><br>
+        <input id="objet" placeholder="Objet de mission"><br><br>
+        <input id="fonction" placeholder="Fonction"><br><br>
+        <input id="destination" placeholder="Destination"><br><br>
+        <input id="depart" placeholder="Date départ"><br><br>
+        <input id="retour" placeholder="Date retour"><br><br>
+        <input id="transport" placeholder="Moyen de transport"><br><br>
+        <input id="chauffeur" placeholder="Chauffeur"><br><br>
+        <input id="accompagne" placeholder="Accompagné"><br><br>
+
+        <button onclick="genererOrdre()">Générer</button>
+        <button onclick="imprimer()">🖨️ Imprimer</button>
 
         <hr>
 
-        <h3>Publication PDF</h3>
-        <input type="text" id="titrePub" placeholder="Titre"><br><br>
-<textarea id="contenuPub" placeholder="Contenu"></textarea><br><br>
-        <input type="file" id="fichierPub" accept="application/pdf"><br><br>
-        <button onclick="ajouterPublication()">Publier</button>
+        <div id="ordreMission"></div>
+        <div id="qrcode"></div>
     </div>
 
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDOmhRlFsIRcjn-KRAvFutN0qK6XdZO9o8",
+            authDomain: "site-ins-agadez.firebaseapp.com",
+            projectId: "site-ins-agadez",
+            storageBucket: "site-ins-agadez.firebasestorage.app",
+            messagingSenderId: "29506145316",
+            appId: "1:29506145316:web:e41dec1ea18a822afc1cb1"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
 
+        let estAdmin = false;
         // MENU + MOT DE PASSE
+        function loginAdmin() {
+
+            let email = prompt("Email admin :");
+            let password = prompt("Mot de passe :");
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    alert("Connexion réussie ✅");
+                    estAdmin = true;
+                    showSection('admin');
+                    afficherActualitesAdmin();
+                    afficherPublicationsAdmin();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Erreur connexion ❌");
+                });
+        }
+
         function showSection(id) {
-
-            if (id === 'admin') {
-                let password = prompt("Mot de passe :");
-                if (password !== "1234") {
-                    alert("Accès refusé");
-                    return;
-                }
-            }
-
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
@@ -165,26 +248,102 @@
         }
 
         function sauvegarderActu(titre, contenu, image) {
-            let data = JSON.parse(localStorage.getItem("actu")) || [];
-            data.push({ titre, contenu, image });
-            localStorage.setItem("actu", JSON.stringify(data));
-            afficherActualites();
+
+            db.collection("actualites").add({
+                titre: titre,
+                contenu: contenu,
+                image: image,
+                date: new Date()
+            })
+                .then(() => {
+                    alert("Actualité ajoutée ✅");
+                    afficherActualites();
+                })
+                .catch(err => {
+                    alert("Erreur ❌");
+                    console.error(err);
+                });
         }
 
         function afficherActualites() {
+
             let list = document.getElementById("listeActualites");
-            list.innerHTML = "";
+            list.innerHTML = "Chargement...";
 
-            let data = JSON.parse(localStorage.getItem("actu")) || [];
+            db.collection("actualites")
+                .orderBy("date", "desc")
+                .get()
+                .then(snapshot => {
 
-            data.forEach(a => {
-                list.innerHTML += `
+                    list.innerHTML = "";
+
+                    if (snapshot.empty) {
+                        list.innerHTML = "<p>Aucune actualité</p>";
+                        return;
+                    }
+
+                    snapshot.forEach(doc => {
+
+                        let a = doc.data();
+
+                        list.innerHTML += `
             <div class="card">
                 ${a.image ? `<img src="${a.image}" width="200">` : ""}
                 <h3>${a.titre}</h3>
                 <p>${a.contenu}</p>
-            </div>`;
-            });
+            </div>
+            `;
+                    });
+
+                })
+                .catch(err => {
+                    console.error("Erreur Firestore :", err);
+                    list.innerHTML = "<p>Erreur chargement ❌</p>";
+                });
+        }
+
+        function modifierActu(id, ancienTitre, ancienContenu) {
+
+            let nouveauTitre = prompt("Modifier le titre :", ancienTitre);
+            let nouveauContenu = prompt("Modifier le contenu :", ancienContenu);
+
+            if (!nouveauTitre || !nouveauContenu) return;
+
+            db.collection("actualites").doc(id).update({
+                titre: nouveauTitre,
+                contenu: nouveauContenu
+            })
+                .then(() => {
+                    alert("Modifié ✅");
+                    afficherActualites();
+                });
+        }
+
+        function afficherActualitesAdmin() {
+
+            let list = document.getElementById("listeActualitesAdmin");
+            list.innerHTML = "Chargement...";
+
+            db.collection("actualites")
+                .orderBy("date", "desc")
+                .get()
+                .then(snapshot => {
+
+                    list.innerHTML = "";
+
+                    snapshot.forEach(doc => {
+
+                        let a = doc.data();
+
+                        list.innerHTML += `
+                <div class="card">
+                    <h3>${a.titre}</h3>
+                    <p>${a.contenu}</p>
+                </div>
+                `;
+                    });
+
+                });
         }
 
         // PUBLICATIONS PDF
@@ -201,26 +360,108 @@
         }
 
         function sauvegarderPub(titre, contenu, fichier) {
-            let data = JSON.parse(localStorage.getItem("pub")) || [];
-            data.push({ titre, contenu, fichier });
-            localStorage.setItem("pub", JSON.stringify(data));
-            afficherPublications();
+
+            db.collection("publications").add({
+                titre: titre,
+                contenu: contenu,
+                fichier: fichier,
+                date: new Date()
+            })
+                .then(() => {
+                    alert("Publication ajoutée ✅");
+                    afficherPublications();
+                });
         }
 
         function afficherPublications() {
+
             let list = document.getElementById("listePublications");
-            list.innerHTML = "";
+            list.innerHTML = "Chargement...";
 
-            let data = JSON.parse(localStorage.getItem("pub")) || [];
+            db.collection("publications")
+                .orderBy("date", "desc")
+                .get()
+                .then(snapshot => {
 
-            data.forEach(p => {
-                list.innerHTML += `
+                    list.innerHTML = "";
+
+                    if (snapshot.empty) {
+                        list.innerHTML = "<p>Aucune publication</p>";
+                        return;
+                    }
+
+                    snapshot.forEach(doc => {
+
+                        let p = doc.data();
+
+                        list.innerHTML += `
             <div class="card">
                 <h3>${p.titre}</h3>
                 <p>${p.contenu}</p>
                 <a href="${p.fichier}" target="_blank">📄 Ouvrir PDF</a>
-            </div>`;
-            });
+            </div>
+            `;
+                    });
+
+                })
+                .catch(err => {
+                    console.error("Erreur Firestore :", err);
+                    list.innerHTML = "<p>Erreur chargement ❌</p>";
+                });
+        }
+
+        function supprimerPublication(id) {
+
+            if (confirm("Supprimer cette publication ?")) {
+
+                db.collection("publications").doc(id).delete()
+                    .then(() => {
+                        alert("Supprimé ✅");
+                        afficherPublications();
+                    });
+
+            }
+        }
+
+        function modifierPublication(id, ancienTitre, ancienContenu) {
+
+            let nouveauTitre = prompt("Modifier le titre :", ancienTitre);
+            let nouveauContenu = prompt("Modifier le contenu :", ancienContenu);
+
+            if (!nouveauTitre || !nouveauContenu) return;
+
+            db.collection("publications").doc(id).update({
+                titre: nouveauTitre,
+                contenu: nouveauContenu
+            })
+                .then(() => {
+                    alert("Modifié ✅");
+                    afficherPublications();
+                });
+        }
+
+        function afficherPublicationsAdmin() {
+            let list = document.getElementById("listePublicationsAdmin");
+
+            db.collection("publications")
+                .orderBy("date", "desc")
+                .get()
+                .then(snapshot => {
+
+                    list.innerHTML = "";
+
+                    snapshot.forEach(doc => {
+
+                        let p = doc.data();
+
+                        list.innerHTML += `
+                <div class="card">
+                    <h3>${p.titre}</h3>
+                </div>
+                `;
+                    });
+
+                });
         }
 
         // CHARGEMENT
@@ -228,14 +469,44 @@
             afficherActualites();
             afficherPublications();
         };
-        let images = ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg"];
+        let images = ["images1.jpg", "image1.jpg", "images2.jpg", "image2.jpg", "images3.jpg", "image3.jpg", "images4.jpg", "image4.jpg", "images5.jpg", "image5.jpg", "images6.jpg", "images7.jpg", "images8.jpg", "images9.jpg", "images10.jpg"];
         let index = 0;
 
         setInterval(() => {
             index = (index + 1) % images.length;
             document.getElementById("slider").src = images[index];
         }, 3000);
+        function genererOrdre() {
+
+            let url = "ordremission.html?" +
+                "num=" + encodeURIComponent(num.value) +
+                "&dateVille=" + encodeURIComponent(dateVille.value) +
+                "&nom=" + encodeURIComponent(nom.value) +
+                "&prenom=" + encodeURIComponent(prenom.value) +
+                "&objet=" + encodeURIComponent(objet.value) +
+                "&fonction=" + encodeURIComponent(fonction.value) +
+                "&destination=" + encodeURIComponent(destination.value) +
+                "&depart=" + encodeURIComponent(depart.value) +
+                "&retour=" + encodeURIComponent(retour.value) +
+                "&transport=" + encodeURIComponent(transport.value) +
+                "&chauffeur=" + encodeURIComponent(chauffeur.value) +
+                "&accompagne=" + encodeURIComponent(accompagne.value);
+
+            document.getElementById("ordreMission").innerHTML = `
+                        <h3>✅ Ordre généré</h3>
+                        <a href="${url}" target="_blank">👉 Voir l'ordre de mission</a>
+                    `;
+
+            document.getElementById("qrcode").innerHTML = "";
+
+            new QRCode(document.getElementById("qrcode"), {
+                text: url,
+                width: 150,
+                height: 150
+            });
+        }
     </script>
 
 </body>
 </html>
+
